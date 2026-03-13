@@ -69,4 +69,3 @@ def history(user_id: int, db: Session = Depends(get_db)) -> list[ChatMessageOut]
         .limit(500)
     )
     return [ChatMessageOut.model_validate(x, from_attributes=True) for x in q.all()]
-

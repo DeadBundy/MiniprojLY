@@ -51,3 +51,18 @@ def crisis_response_message() -> str:
         "You can also contact a crisis helpline (examples below)."
     )
 
+
+def format_crisis_resources() -> str:
+    """
+    Render the example crisis resources as readable bullet points.
+    """
+    lines = ["Here are some example crisis resources:"]
+    for r in CRISIS_RESOURCES_EXAMPLE:
+        name = r.get("name", "").strip()
+        contact = r.get("contact", "").strip()
+        if not name and not contact:
+            continue
+        lines.append(f"- {name}: {contact}")
+    return "\n".join(lines)
+
+

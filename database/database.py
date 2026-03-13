@@ -6,9 +6,16 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase, Session
 
 
 def _get_database_url() -> str:
-    return "sqlite:///./mental_wellness.db"
+    """
+    Resolve the database URL, preferring an explicit env var and
+    otherwise falling back to PostgreSQL connection parameters.
+    """
+    # Highest priority: a full DATABASE_URL if provided.
+    url = os.getenv("DATABASE_URL")
+    if url:
+        return url
 
-    # Fallback local dev defaults
+    # Fallback local dev defaults for PostgreSQL.
     user = os.getenv("POSTGRES_USER", "postgres")
     password = os.getenv("POSTGRES_PASSWORD", "postgres")
     host = os.getenv("POSTGRES_HOST", "localhost")
