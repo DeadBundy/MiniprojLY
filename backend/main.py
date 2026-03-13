@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 
-from database.database import Base, engine, get_db
+from database.database import Base, engine
+from models import tables  # noqa: F401 (ensures models are registered)
 from backend.routers import journal, chat, emotions, reports
+from utils.safety import DISCLAIMER
 
 
 def create_app() -> FastAPI:
@@ -38,7 +39,7 @@ def create_app() -> FastAPI:
     # Health check
     @app.get("/health")
     def health() -> dict:
-        return {"status": "ok"}
+        return {"status": "ok", "disclaimer": DISCLAIMER}
 
     # Include feature routers
     app.include_router(journal.router, prefix="/api/journal", tags=["journal"])
